@@ -9,7 +9,8 @@ import comum.Banco;
 import comum.Util;
 import comum.ValidacaoDeFormularios;
 import entidades.Estado;
-import entidades.Modelos;
+import entidades.Loja;
+import entidades.Modelo;
 import entidades.Veiculo;
 import java.util.ArrayList;
 
@@ -19,8 +20,9 @@ import java.util.ArrayList;
  */
 public class TelaCadastroVeiculo extends javax.swing.JFrame {
 
-    private ArrayList<Modelos> _modelos = null;
+    private ArrayList<Modelo> _modelos = null;
     private ArrayList<Estado> _estados = null;
+    private ArrayList<Loja> _lojas = null;
     private Banco _banco = null;
 
     /**
@@ -38,6 +40,7 @@ public class TelaCadastroVeiculo extends javax.swing.JFrame {
 
         preencherComboBoxEstados();
         preencherComboBoxMarcaModelo();
+        preencherComboBoxLojas();
     }
 
     private void preencherComboBoxEstados() {
@@ -61,11 +64,25 @@ public class TelaCadastroVeiculo extends javax.swing.JFrame {
         this._modelos = _banco.listarMarcasModelos();
 
         //{Marca} / {Modelo}        
-        for (Modelos item : _modelos) {
+        for (Modelo item : _modelos) {
             String texto = String.format("%s / %s", item.getMarca(), item.getModelo());
             cbMarcaModelo.addItem(texto);
         }
 
+    }
+    
+    private void preencherComboBoxLojas() {
+        
+        cbLoja.removeAllItems();
+        cbLoja.addItem("SELECIONE");
+        
+        this._lojas = _banco.listarLoja();
+        //{ID} / {Loja}
+        for (Loja item : _lojas) {
+            String texto = String.format("%s / %s", item.getId(), item.getNome());
+            cbLoja.addItem(texto);
+        }
+        
     }
 
     /**
@@ -88,6 +105,8 @@ public class TelaCadastroVeiculo extends javax.swing.JFrame {
         btnSalvar = new javax.swing.JButton();
         cbEstado = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        cbLoja = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Cadastro de veiculos");
@@ -115,6 +134,10 @@ public class TelaCadastroVeiculo extends javax.swing.JFrame {
 
         jLabel5.setText("Estado");
 
+        jLabel6.setText("Loja");
+
+        cbLoja.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -122,6 +145,7 @@ public class TelaCadastroVeiculo extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(73, 73, 73)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel6)
                     .addComponent(jLabel5)
                     .addComponent(btnSalvar)
                     .addComponent(jLabel4)
@@ -132,7 +156,8 @@ public class TelaCadastroVeiculo extends javax.swing.JFrame {
                     .addComponent(txtAno, javax.swing.GroupLayout.DEFAULT_SIZE, 325, Short.MAX_VALUE)
                     .addComponent(txtPreco)
                     .addComponent(cbMarcaModelo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(cbEstado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(cbEstado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cbLoja, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(61, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -158,9 +183,13 @@ public class TelaCadastroVeiculo extends javax.swing.JFrame {
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cbEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cbLoja, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
                 .addComponent(btnSalvar)
-                .addContainerGap(44, Short.MAX_VALUE))
+                .addGap(80, 80, 80))
         );
 
         pack();
@@ -174,6 +203,7 @@ public class TelaCadastroVeiculo extends javax.swing.JFrame {
 
         int idModelo = extrairIdDoModelo();
         int idEstado = extrairIdDoEstado();
+        int idLoja = extrairIdDaLoja();
         int ano = Integer.parseInt(txtAno.getText());
         float preco = Float.parseFloat(txtPreco.getText());
 
@@ -181,9 +211,10 @@ public class TelaCadastroVeiculo extends javax.swing.JFrame {
         Veiculo veiculo = new Veiculo(
                 txtPlaca.getText(),                
                 ano,
-                idModelo,
                 preco,
-                idEstado);
+                idModelo,
+                idEstado,
+                idLoja);
 
         boolean inseriu = _banco.novoVeiculo(veiculo);
         if (inseriu)
@@ -192,7 +223,12 @@ public class TelaCadastroVeiculo extends javax.swing.JFrame {
             Util.mensagemDeAlerta("Ocorreu um erro ao tentar inserir um novo veiculo no banco de dados", this);
         
         
-        this.dispose();
+        txtPlaca.setText("");
+        txtAno.setText("");
+        txtPreco.setText("");
+        cbEstado.setSelectedIndex(0);
+        cbLoja.setSelectedIndex(0);
+        cbMarcaModelo.setSelectedIndex(0);
         
         
     }//GEN-LAST:event_btnSalvarActionPerformed
@@ -229,7 +265,7 @@ public class TelaCadastroVeiculo extends javax.swing.JFrame {
         String valor = cbMarcaModelo.getSelectedItem().toString();
         String marca = valor.split("/")[0].trim();
         String modelo = valor.split("/")[1].trim();
-        for (Modelos item : _modelos) {            
+        for (Modelo item : _modelos) {            
             if (item.getMarca().equals(marca) && item.getModelo().equals(modelo))
                 return item.getId();
         }
@@ -249,6 +285,20 @@ public class TelaCadastroVeiculo extends javax.swing.JFrame {
 
         return 0;
     }
+     
+     private int extrairIdDaLoja() {
+         
+         // formato: {Id} / {Nome}        
+        String valor = cbLoja.getSelectedItem().toString();
+        int id = Integer.parseInt(valor.split("/")[0].trim());
+        for (Loja item : _lojas) {            
+            if (item.getId() == id)
+                return item.getId();
+        }
+        
+        return 0;
+         
+     }
 
     /**
      * @param args the command line arguments
@@ -288,12 +338,14 @@ public class TelaCadastroVeiculo extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSalvar;
     private javax.swing.JComboBox<String> cbEstado;
+    private javax.swing.JComboBox<String> cbLoja;
     private javax.swing.JComboBox<String> cbMarcaModelo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JTextField txtAno;
     private javax.swing.JTextField txtPlaca;
     private javax.swing.JTextField txtPreco;

@@ -9,19 +9,19 @@ package entidades;
  *
  * @author Lizandra
  */
-public class Modelos {
+public class Modelo {
     
     private int _id;
     private String _marca;
     private String _modelo;
 
-    public Modelos(int id, String _marca, String _modelo) {
+    public Modelo(int id, String _marca, String _modelo) {
         this._id = id;
         this._marca = _marca;
         this._modelo = _modelo;
     }
     
-    public Modelos(){
+    public Modelo(){
         
     }
     

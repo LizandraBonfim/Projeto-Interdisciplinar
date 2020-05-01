@@ -13,34 +13,45 @@ public class Veiculo {
     
     private int _id;
     private String _placa;    
-    private int _ano;
-    private int _idModelo;
-    private String _modelo;
-    private float _preco;
+    private int _ano;        
+    private float _preco;    
+    
     private int _idEstado;
-    private String _estado;
+    private Estado _estado;
+    
+    private int _idModelo;
+    private Modelo _modelo;
+    
+    private int _idLoja;
+    private Loja _loja;
 
     
     // Gerado para construir uma nova instancia de veiculo a partir do banco de dados.
     // Somente o banco de dados que vai utilizar esse construtor
-    public Veiculo(int _id, String _placa, int _ano, int _idModelo, String _modelo, float _preco, int _idEstado, String _estado) {
-        this._id = _id;
-        this._placa = _placa;
-        this._ano = _ano;
-        this._idModelo = _idModelo;
-        this._modelo = _modelo;
-        this._preco = _preco;
-        this._idEstado = _idEstado;
-        this._estado = _estado;
+    public Veiculo(
+            int id, String placa, int ano, float preco, 
+            Estado estado, 
+            Modelo modelo,
+            Loja loja) {
+        this._id = id;
+        this._placa = placa;
+        this._ano = ano;        
+        this._preco = preco;        
+        this._estado = estado;
+        this._modelo = modelo;        
+        this._loja = loja;
+        
     }
 
     // Esse construtor deve ser usando para criar um novo veiculo
-    public Veiculo(String _placa, int _ano, int _idModelo, float _preco, int _idEstado) {
-        this._placa = _placa;
-        this._ano = _ano;
-        this._idModelo = _idModelo;
-        this._preco = _preco;
-        this._idEstado = _idEstado;
+    public Veiculo(String placa, int ano, float preco, int idModelo, int idEstado, int idLoja) {
+        this._placa = placa;
+        this._ano = ano;        
+        this._preco = preco;
+        this._idModelo = idModelo;
+        this._idEstado = idEstado;
+        this._idLoja = idLoja;
+        
     }
     
     
@@ -61,7 +72,11 @@ public class Veiculo {
     }
 
     public String getModelo() {
-        return _modelo;
+        return _modelo.getModelo();
+    }
+    
+    public String getMarca() {
+        return _modelo.getMarca();
     }
 
     public float getPreco() {
@@ -69,7 +84,19 @@ public class Veiculo {
     }
 
     public String getEstado() {
-        return _estado;
+        return _estado.getNome();
+    }
+    
+    public String getUF() {
+        return _estado.getUf();
+    }   
+    
+    public String getLoja() {
+        return _loja.getNome();
+    }
+    
+    public int getIdLoja(){
+        return _idLoja;
     }
     
     
@@ -93,27 +120,32 @@ public class Veiculo {
         this._ano = _ano;
     }
 
-    public void setModelo(String _modelo) {
-        this._modelo = _modelo;
-    }
+    
 
     public void setPreco(float _preco) {
         this._preco = _preco;
-    }
-
-    public void setEstado(String _estado) {
-        this._estado = _estado;
-    }
+    }    
 
     
     //Usado para atualizar posteriormente no banco de dados    
-    public void AtualizarEstado(int idEstado){
-        this._idEstado = idEstado;        
+    public void AtualizarEstado(Estado estado){
+        this._estado = estado;
+        this._idEstado = estado.getId();
     }    
     
     //Usado para atualizar posteriormente no banco de dados
-    public void AtualizarModelo(int idModelo){
-        this._idModelo = idModelo;        
-    }    
+    public void atualizarModelo(Modelo modelo){
+        this._modelo = modelo;
+        this._idModelo = modelo.getId();
+    }  
+    
+    public void atualizarLoja(Loja loja){
+        this._loja = loja;
+        this._idLoja = loja.getId();
+        
+    }
+    
+    
     
 }
+

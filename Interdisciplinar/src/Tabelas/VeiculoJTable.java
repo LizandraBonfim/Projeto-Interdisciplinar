@@ -28,7 +28,7 @@ public class VeiculoJTable {
     public void montarVeiculos(JTable tabela){
         
         String[] colunas = { "Id", "Placa", "Marca", "Modelo", "Ano", 
-            "Preco", "Estado", "UF", "Loja", "Editar" };
+            "Preco", "Estado", "UF", "Loja" };
         
         Object[][] data = montarDados();
         

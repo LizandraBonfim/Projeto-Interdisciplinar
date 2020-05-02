@@ -20,6 +20,8 @@ public class Veiculo {
     private Estado _estado;
     
     private int _idModelo;
+
+    
     private Modelo _modelo;
     
     private int _idLoja;
@@ -38,8 +40,11 @@ public class Veiculo {
         this._ano = ano;        
         this._preco = preco;        
         this._estado = estado;
+        this._idEstado = estado.getId();
         this._modelo = modelo;        
+        this._idModelo = modelo.getId();
         this._loja = loja;
+        this._idLoja = loja.getId();
         
     }
 
@@ -118,32 +123,26 @@ public class Veiculo {
 
     public void setAno(int _ano) {
         this._ano = _ano;
-    }
-
-    
+    }   
 
     public void setPreco(float _preco) {
         this._preco = _preco;
     }    
+    
+    public void setIdEstado(int _idEstado) {
+        this._idEstado = _idEstado;
+    }
+
+    public void setIdModelo(int _idModelo) {
+        this._idModelo = _idModelo;
+    }
+
+    public void setIdLoja(int _idLoja) {
+        this._idLoja = _idLoja;
+    }
 
     
-    //Usado para atualizar posteriormente no banco de dados    
-    public void AtualizarEstado(Estado estado){
-        this._estado = estado;
-        this._idEstado = estado.getId();
-    }    
-    
-    //Usado para atualizar posteriormente no banco de dados
-    public void atualizarModelo(Modelo modelo){
-        this._modelo = modelo;
-        this._idModelo = modelo.getId();
-    }  
-    
-    public void atualizarLoja(Loja loja){
-        this._loja = loja;
-        this._idLoja = loja.getId();
-        
-    }
+   
     
     
     

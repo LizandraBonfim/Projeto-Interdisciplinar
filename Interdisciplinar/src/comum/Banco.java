@@ -5,7 +5,6 @@
  */
 package comum;
 
-
 import entidades.Estado;
 import entidades.Loja;
 import entidades.Modelo;
@@ -24,7 +23,7 @@ import java.util.ArrayList;
 public class Banco {
 
     private Connection conexao;
-    private Statement statement;    
+    private Statement statement;
 
     private void montarConexao() {
 
@@ -113,9 +112,9 @@ public class Banco {
         return salvou;
 
     }
-    
-    public ArrayList<Estado> listarEstados(){
-        
+
+    public ArrayList<Estado> listarEstados() {
+
         ArrayList<Estado> estados = new ArrayList<Estado>();
 
         try {
@@ -129,7 +128,7 @@ public class Banco {
                 int id = resultado.getInt("id");
                 String nome = resultado.getString("nome");
                 String uf = resultado.getString("uf");
-                
+
                 estados.add(new Estado(id, nome, uf));
 
             }
@@ -146,7 +145,7 @@ public class Banco {
         }
 
         return estados;
-        
+
     }
 
     public ArrayList<Modelo> listarMarcasModelos() {
@@ -160,8 +159,8 @@ public class Banco {
 
             while (resultado.next()) {
 
-                int id = resultado.getInt("id");                
-                
+                int id = resultado.getInt("id");
+
                 String marca = resultado.getString("marca");
                 String modelo = resultado.getString("modelo");
                 modelos.add(new Modelo(id, marca, modelo));
@@ -189,16 +188,16 @@ public class Banco {
         return salvou;
 
     }
-    
-    public boolean novoVeiculo(Veiculo veiculo){
-        
+
+    public boolean novoVeiculo(Veiculo veiculo) {
+
         boolean salvou = ExecutarComando(Querys.novoVeiculo(veiculo));
         return salvou;
-        
+
     }
-    
+
     public ArrayList<Veiculo> listarVeiculos() {
-        
+
         ArrayList<Veiculo> veiculos = new ArrayList<Veiculo>();
 
         try {
@@ -209,7 +208,7 @@ public class Banco {
 
             while (resultado.next()) {
 
-                int id = resultado.getInt("id");                
+                int id = resultado.getInt("id");
                 String placa = resultado.getString("placa");
                 int idMarca = resultado.getInt("idMarca");
                 String marca = resultado.getString("marca");
@@ -221,10 +220,10 @@ public class Banco {
                 String uf = resultado.getString("uf");
                 int idLoja = resultado.getInt("idLoja");
                 String loja = resultado.getString("loja");
-                
+
                 veiculos.add(
-                        new Veiculo(id, placa, ano, preco, 
-                                new Estado(idEstado, estado, uf), 
+                        new Veiculo(id, placa, ano, preco,
+                                new Estado(idEstado, estado, uf),
                                 new Modelo(idMarca, marca, modelo),
                                 new Loja(idLoja, loja)));
 
@@ -242,18 +241,66 @@ public class Banco {
         }
 
         return veiculos;
-        
+
     }
-    
+
+    public Veiculo buscarVeiculoPorId(int idVeiculo) {
+
+        Veiculo veiculo = null;
+
+        try {
+
+            montarConexao();
+            Statement statement = conexao.createStatement();
+            
+            String query = Querys.buscarVeiculoPorId(idVeiculo);
+            ResultSet resultado = statement.executeQuery(Querys.buscarVeiculoPorId(idVeiculo));
+
+            if (resultado.next()) {
+
+                int id = resultado.getInt("id");
+                String placa = resultado.getString("placa");
+                int idMarca = resultado.getInt("idMarca");
+                String marca = resultado.getString("marca");
+                String modelo = resultado.getString("modelo");
+                int ano = resultado.getInt("ano");
+                float preco = resultado.getFloat("preco");
+                int idEstado = resultado.getInt("idEstado");
+                String estado = resultado.getString("nome");
+                String uf = resultado.getString("uf");
+                int idLoja = resultado.getInt("idLoja");
+                String loja = resultado.getString("loja");
+
+                veiculo = new Veiculo(id, placa, ano, preco,
+                        new Estado(idEstado, estado, uf),
+                        new Modelo(idMarca, marca, modelo),
+                        new Loja(idLoja, loja));
+            }
+
+            statement.close();
+            return veiculo;
+
+        } catch (Exception e) {
+
+            System.out.println("Ocorreu um erro ao tentar executar um comando "
+                    + "no banco de dados");
+
+            System.out.println("Erro: " + e.getMessage());
+        }
+
+        return veiculo;
+
+    }
+
     public boolean novaLoja(String nome) {
 
-        boolean salvou = ExecutarComando(Querys.NovaLoja(nome) );
+        boolean salvou = ExecutarComando(Querys.NovaLoja(nome));
         return salvou;
 
     }
-    
+
     public ArrayList<Loja> listarLoja() {
-        
+
         ArrayList<Loja> loja = new ArrayList<Loja>();
 
         try {
@@ -264,9 +311,9 @@ public class Banco {
 
             while (resultado.next()) {
 
-                int id = resultado.getInt("id");                
-                String nome = resultado.getString("nome");                
-                
+                int id = resultado.getInt("id");
+                String nome = resultado.getString("nome");
+
                 loja.add(new Loja(id, nome));
 
             }
@@ -283,7 +330,15 @@ public class Banco {
         }
 
         return loja;
-        
-    }
 
+    }
+    
+    
+    public boolean atualizarVeiculo(Veiculo veiculo){
+        
+        boolean salvou = ExecutarComando(Querys.atualizarVeiculo(veiculo));
+        return salvou;
+
+    }
+    
 }

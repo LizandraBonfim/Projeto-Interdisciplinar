@@ -116,6 +116,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         btnEditar.setText("Editar");
         btnEditar.setEnabled(false);
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
 
         jMenu2.setText("Cadastro");
 
@@ -249,16 +254,20 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     private void tbDinamicaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbDinamicaMouseClicked
         // TODO add your handling code here:
-        int index = tbDinamica.getSelectedRow();
-        int id = (int)tbDinamica.getValueAt(index, 0);
-        //Util.mensagemDeAlerta("O id é: " + id, this);
-        
-        btnEditar.setEnabled(true);
-        
+        btnEditar.setEnabled(true);    
         
         
         
     }//GEN-LAST:event_tbDinamicaMouseClicked
+
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        // TODO add your handling code here:
+
+        int index = tbDinamica.getSelectedRow();
+        int id = (int)tbDinamica.getValueAt(index, 0);
+        new TelaCadastroVeiculo(id).show();
+        
+    }//GEN-LAST:event_btnEditarActionPerformed
 
     /**
      * @param args the command line arguments

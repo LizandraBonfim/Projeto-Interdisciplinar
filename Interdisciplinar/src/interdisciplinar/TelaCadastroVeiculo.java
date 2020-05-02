@@ -23,7 +23,14 @@ public class TelaCadastroVeiculo extends javax.swing.JFrame {
     private ArrayList<Modelo> _modelos = null;
     private ArrayList<Estado> _estados = null;
     private ArrayList<Loja> _lojas = null;
+    private Veiculo _veiculo = null;
     private Banco _banco = null;
+
+    public TelaCadastroVeiculo(int idVeiculo) {
+
+        this();
+        carregarVeiculoId(idVeiculo);
+    }
 
     /**
      * Creates new form TelaCadastroVeiculo
@@ -70,19 +77,106 @@ public class TelaCadastroVeiculo extends javax.swing.JFrame {
         }
 
     }
-    
+
     private void preencherComboBoxLojas() {
-        
+
         cbLoja.removeAllItems();
         cbLoja.addItem("SELECIONE");
-        
+
         this._lojas = _banco.listarLoja();
         //{ID} / {Loja}
         for (Loja item : _lojas) {
             String texto = String.format("%s / %s", item.getId(), item.getNome());
             cbLoja.addItem(texto);
         }
-        
+
+    }
+
+    private boolean formularioValido() {
+
+        if (!ValidacaoDeFormularios.campoTextoEstaValido("Placa", txtPlaca, this)) {
+            return false;
+        }
+
+        if (!ValidacaoDeFormularios.campoComboBoxEstaValido("Marca", cbMarcaModelo, this)) {
+            return false;
+        }
+
+        if (!ValidacaoDeFormularios.campoTextoEstaValido("Ano", txtAno, this)) {
+            return false;
+        }
+
+        if (!ValidacaoDeFormularios.campoTextoEstaValido("Preço", txtPreco, this)) {
+            return false;
+        }
+
+        if (!ValidacaoDeFormularios.campoComboBoxEstaValido("Estado", cbEstado, this)) {
+            return false;
+        }
+
+        return true;
+
+    }
+
+    private int extrairIdDoModelo() {
+
+        // formato: {Marca} / {Modelo}
+        String valor = cbMarcaModelo.getSelectedItem().toString();
+        String marca = valor.split("/")[0].trim();
+        String modelo = valor.split("/")[1].trim();
+        for (Modelo item : _modelos) {
+            if (item.getMarca().equals(marca) && item.getModelo().equals(modelo)) {
+                return item.getId();
+            }
+        }
+
+        return 0;
+    }
+
+    private int extrairIdDoEstado() {
+
+        // formato: {UF} / {Nome}        
+        String valor = cbEstado.getSelectedItem().toString();
+        String uf = valor.split("/")[0].trim();
+        for (Estado item : _estados) {
+            if (item.getUf().equals(uf)) {
+                return item.getId();
+            }
+        }
+
+        return 0;
+    }
+
+    private int extrairIdDaLoja() {
+
+        // formato: {Id} / {Nome}        
+        String valor = cbLoja.getSelectedItem().toString();
+        int id = Integer.parseInt(valor.split("/")[0].trim());
+        for (Loja item : _lojas) {
+            if (item.getId() == id) {
+                return item.getId();
+            }
+        }
+
+        return 0;
+
+    }
+
+    private void carregarVeiculoId(int idVeiculo) {
+
+        _veiculo = _banco.buscarVeiculoPorId(idVeiculo);
+        txtPlaca.setText(_veiculo.getPlaca());
+        txtAno.setText(Integer.toString(_veiculo.getAno()));
+        txtPreco.setText(Float.toString(_veiculo.getPreco()));
+
+        String estado = String.format("%s / %s", _veiculo.getUF(), _veiculo.getEstado());
+        String marca = String.format("%s / %s", _veiculo.getMarca(), _veiculo.getModelo());
+        String loja = String.format("%s / %s", _veiculo.getIdLoja(), _veiculo.getLoja());
+
+        cbEstado.setSelectedItem(estado);
+        cbMarcaModelo.setSelectedItem(marca);
+        cbLoja.setSelectedItem(loja);
+
     }
 
     /**
@@ -201,104 +295,85 @@ public class TelaCadastroVeiculo extends javax.swing.JFrame {
             return;
         }
 
-        int idModelo = extrairIdDoModelo();
-        int idEstado = extrairIdDoEstado();
-        int idLoja = extrairIdDaLoja();
-        int ano = Integer.parseInt(txtAno.getText());
-        float preco = Float.parseFloat(txtPreco.getText());
+        // Se o veiculo estiver null significa que o usuario
+        // esta criando um novo veiculo
+        if (_veiculo == null){
+            salvarNovoVeiculo();
+            return;
+        }
 
-        
-        Veiculo veiculo = new Veiculo(
-                txtPlaca.getText(),                
-                ano,
-                preco,
-                idModelo,
-                idEstado,
-                idLoja);
+        // com a varival local _veiculo tem conteudo, significa que o
+        // usuario quer alterar um veículo selecionado.
+        atualizarVeiculo();
+
+
+    }//GEN-LAST:event_btnSalvarActionPerformed
+
+    private void salvarNovoVeiculo() {
+
+        Veiculo veiculo = criarVeiculo();
 
         boolean inseriu = _banco.novoVeiculo(veiculo);
-        if (inseriu)
+        if (inseriu) {
             Util.mensagemDeAlerta("Veiculo inserido com sucesso", this);
-        else
+        } else {
             Util.mensagemDeAlerta("Ocorreu um erro ao tentar inserir um novo veiculo no banco de dados", this);
-        
-        
+        }
+
         txtPlaca.setText("");
         txtAno.setText("");
         txtPreco.setText("");
         cbEstado.setSelectedIndex(0);
         cbLoja.setSelectedIndex(0);
         cbMarcaModelo.setSelectedIndex(0);
-        
-        
-    }//GEN-LAST:event_btnSalvarActionPerformed
-
-    private boolean formularioValido() {
-
-        if (!ValidacaoDeFormularios.campoTextoEstaValido("Placa", txtPlaca, this)) {
-            return false;
-        }
-
-        if (!ValidacaoDeFormularios.campoComboBoxEstaValido("Marca", cbMarcaModelo, this)) {
-            return false;
-        }
-
-        if (!ValidacaoDeFormularios.campoTextoEstaValido("Ano", txtAno, this)) {
-            return false;
-        }
-
-        if (!ValidacaoDeFormularios.campoTextoEstaValido("Preço", txtPreco, this)) {
-            return false;
-        }
-
-        if (!ValidacaoDeFormularios.campoComboBoxEstaValido("Estado", cbEstado, this)) {
-            return false;
-        }
-
-        return true;
 
     }
 
-    private int extrairIdDoModelo() {
+    private Veiculo criarVeiculo() {
 
-        // formato: {Marca} / {Modelo}
-        String valor = cbMarcaModelo.getSelectedItem().toString();
-        String marca = valor.split("/")[0].trim();
-        String modelo = valor.split("/")[1].trim();
-        for (Modelo item : _modelos) {            
-            if (item.getMarca().equals(marca) && item.getModelo().equals(modelo))
-                return item.getId();
-        }
+        int idModelo = extrairIdDoModelo();
+        int idEstado = extrairIdDoEstado();
+        int idLoja = extrairIdDaLoja();
+        int ano = Integer.parseInt(txtAno.getText());
+        float preco = Float.parseFloat(txtPreco.getText());
 
-        return 0;
+        Veiculo veiculo = new Veiculo(
+                txtPlaca.getText(),
+                ano,
+                preco,
+                idModelo,
+                idEstado,
+                idLoja);
+
+        return veiculo;
     }
-    
-     private int extrairIdDoEstado() {
 
-        // formato: {UF} / {Nome}        
-        String valor = cbEstado.getSelectedItem().toString();
-        String uf = valor.split("/")[0].trim();        
-        for (Estado item : _estados) {            
-            if (item.getUf().equals(uf))
-                return item.getId();
-        }
+    private void atualizarVeiculo() {
 
-        return 0;
-    }
-     
-     private int extrairIdDaLoja() {
-         
-         // formato: {Id} / {Nome}        
-        String valor = cbLoja.getSelectedItem().toString();
-        int id = Integer.parseInt(valor.split("/")[0].trim());
-        for (Loja item : _lojas) {            
-            if (item.getId() == id)
-                return item.getId();
+        int idModelo = extrairIdDoModelo();
+        int idEstado = extrairIdDoEstado();
+        int idLoja = extrairIdDaLoja();
+        int ano = Integer.parseInt(txtAno.getText());
+        float preco = Float.parseFloat(txtPreco.getText());
+
+        _veiculo.setIdLoja(idLoja);
+        _veiculo.setIdEstado(idEstado);
+        _veiculo.setIdModelo(idModelo);
+        _veiculo.setAno(ano);
+        _veiculo.setPreco(preco);
+        _veiculo.setPlaca(txtPlaca.getText());
+        
+        boolean atualizou = _banco.atualizarVeiculo(_veiculo);
+
+        if (atualizou) {
+            Util.mensagemDeAlerta("Veiculo atualizado com sucesso", this);
+        } else {
+            Util.mensagemDeAlerta("Ocorreu um erro ao tentar atualizar um novo veiculo no banco de dados", this);
         }
         
-        return 0;
-         
-     }
+        this.dispose();
+
+    }
 
     /**
      * @param args the command line arguments

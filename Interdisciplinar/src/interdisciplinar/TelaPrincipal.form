@@ -100,6 +100,8 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="btnMaiorMenorPorAno" min="-2" max="-2" attributes="0"/>
                           </Group>
+                          <Component id="btnEditar" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblItemSelecionado" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
@@ -122,8 +124,12 @@
                   <Component id="btnQtdPorMarcaEModelo" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnMaiorMenorPorAno" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="71" max="32767" attributes="0"/>
-              <Component id="jScrollPane1" min="-2" pref="348" max="-2" attributes="0"/>
+              <EmptySpace pref="179" max="32767" attributes="0"/>
+              <Component id="lblItemSelecionado" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="btnEditar" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jScrollPane1" min="-2" pref="180" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -180,6 +186,9 @@
               <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tbDinamicaMouseClicked"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
@@ -212,6 +221,17 @@
     <Component class="javax.swing.JButton" name="btnMaiorMenorPorAno">
       <Properties>
         <Property name="text" type="java.lang.String" value="Maior / Menor por ano"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblItemSelecionado">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Seleiconado"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnEditar">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Editar"/>
+        <Property name="enabled" type="boolean" value="false"/>
       </Properties>
     </Component>
   </SubComponents>

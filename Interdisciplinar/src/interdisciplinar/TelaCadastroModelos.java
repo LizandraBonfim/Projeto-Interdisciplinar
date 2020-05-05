@@ -123,10 +123,10 @@ public class TelaCadastroModelos extends javax.swing.JFrame {
 
     
      private boolean formularioValido() {
-        if (!ValidacaoDeFormularios.campoTextoEstaValido("Marca", txtMarca, this))
+        if (!ValidacaoDeFormularios.campoTextoEstaValido("Marca", txtMarca, 2, this))
             return false;
             
-        if (!ValidacaoDeFormularios.campoTextoEstaValido("Modelo", txtModelo, this))
+        if (!ValidacaoDeFormularios.campoTextoEstaValido("Modelo", txtModelo, 2, this))
             return false;
         
         return true;

@@ -94,7 +94,7 @@ public class TelaCadastroVeiculo extends javax.swing.JFrame {
 
     private boolean formularioValido() {
 
-        if (!ValidacaoDeFormularios.campoTextoEstaValido("Placa", txtPlaca, this)) {
+        if (!ValidacaoDeFormularios.campoTextoEstaValido("Placa", txtPlaca, 2, this)) {
             return false;
         }
 
@@ -102,11 +102,11 @@ public class TelaCadastroVeiculo extends javax.swing.JFrame {
             return false;
         }
 
-        if (!ValidacaoDeFormularios.campoTextoEstaValido("Ano", txtAno, this)) {
+        if (!ValidacaoDeFormularios.campoTextoEstaValido("Ano", txtAno, 4, this)) {
             return false;
         }
 
-        if (!ValidacaoDeFormularios.campoTextoEstaValido("Preço", txtPreco, this)) {
+        if (!ValidacaoDeFormularios.campoTextoEstaValido("Preço", txtPreco, 1, this)) {
             return false;
         }
 

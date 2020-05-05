@@ -126,13 +126,13 @@ public class TelaNovoUsuario extends javax.swing.JFrame {
 
     private boolean formularioValido() {
 
-        if (!ValidacaoDeFormularios.campoTextoEstaValido("Nome", txtNome, this))
+        if (!ValidacaoDeFormularios.campoTextoEstaValido("Nome", txtNome, 2, this))
             return false;              
         
-        if (!ValidacaoDeFormularios.campoTextoEstaValido("Usuário", txtLogin, this))
+        if (!ValidacaoDeFormularios.campoTextoEstaValido("Usuário", txtLogin, 2, this))
             return false;        
         
-        if (!ValidacaoDeFormularios.campoTextoEstaValido("Senha", txtSenha, this))
+        if (!ValidacaoDeFormularios.campoTextoEstaValido("Senha", txtSenha, 2, this))
             return false;        
 
         return true;

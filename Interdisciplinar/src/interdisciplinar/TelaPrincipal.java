@@ -33,10 +33,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         lblSaudacao.setText("Bem Vindo(a): " + UsuarioLogado.nome);
         
         _db = new Banco();
-        _veiculoJTable = new VeiculoJTable(_db);
-        
-        lblItemSelecionado.setVisible(false);
-        
+        _veiculoJTable = new VeiculoJTable(_db);       
         
     }
 
@@ -54,12 +51,9 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tbDinamica = new javax.swing.JTable();
         btnListarVeiculos = new javax.swing.JButton();
-        btnListarVeiculosPorLoja = new javax.swing.JButton();
         btnQtdPorMarcaEModelo = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         btnMaiorMenorPorAno = new javax.swing.JButton();
-        lblItemSelecionado = new javax.swing.JLabel();
-        btnEditar = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -67,6 +61,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
         menuEstado = new javax.swing.JMenuItem();
         menuLoja = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
+        menuConsultaVeiculo = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
 
         jMenu1.setText("jMenu1");
 
@@ -99,26 +95,19 @@ public class TelaPrincipal extends javax.swing.JFrame {
             }
         });
 
-        btnListarVeiculosPorLoja.setText("Por loja");
-        btnListarVeiculosPorLoja.addActionListener(new java.awt.event.ActionListener() {
+        btnQtdPorMarcaEModelo.setText("Qtd por marca e modelo");
+        btnQtdPorMarcaEModelo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnListarVeiculosPorLojaActionPerformed(evt);
+                btnQtdPorMarcaEModeloActionPerformed(evt);
             }
         });
-
-        btnQtdPorMarcaEModelo.setText("Qtd por marca e modelo");
 
         jLabel1.setText("Listagem de veículos:");
 
         btnMaiorMenorPorAno.setText("Maior / Menor por ano");
-
-        lblItemSelecionado.setText("Seleiconado");
-
-        btnEditar.setText("Editar");
-        btnEditar.setEnabled(false);
-        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+        btnMaiorMenorPorAno.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEditarActionPerformed(evt);
+                btnMaiorMenorPorAnoActionPerformed(evt);
             }
         });
 
@@ -158,7 +147,19 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu2);
 
-        jMenu3.setText("Edit");
+        jMenu3.setText("Consulta");
+
+        menuConsultaVeiculo.setText("Veiculos");
+        menuConsultaVeiculo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuConsultaVeiculoActionPerformed(evt);
+            }
+        });
+        jMenu3.add(menuConsultaVeiculo);
+
+        jMenuItem3.setText("jMenuItem3");
+        jMenu3.add(jMenuItem3);
+
         jMenuBar1.add(jMenu3);
 
         setJMenuBar(jMenuBar1);
@@ -178,13 +179,9 @@ public class TelaPrincipal extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(btnListarVeiculos)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnListarVeiculosPorLoja)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnQtdPorMarcaEModelo)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnMaiorMenorPorAno))
-                            .addComponent(btnEditar)
-                            .addComponent(lblItemSelecionado))
+                                .addComponent(btnMaiorMenorPorAno)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -198,14 +195,9 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnListarVeiculos)
-                    .addComponent(btnListarVeiculosPorLoja)
                     .addComponent(btnQtdPorMarcaEModelo)
                     .addComponent(btnMaiorMenorPorAno))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 179, Short.MAX_VALUE)
-                .addComponent(lblItemSelecionado)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnEditar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 239, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -234,16 +226,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private void btnListarVeiculosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListarVeiculosActionPerformed
         // TODO add your handling code here:
         
-        _veiculoJTable.montarVeiculos(tbDinamica);
-        //tbDinamica.setModel( _veiculoJTable.listarVeiculos() );
-        //tbDinamica = tabela;
-        
+        _veiculoJTable.montarVeiculos(tbDinamica);        
     }//GEN-LAST:event_btnListarVeiculosActionPerformed
-
-    private void btnListarVeiculosPorLojaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListarVeiculosPorLojaActionPerformed
-        // TODO add your handling code here:
-        
-    }//GEN-LAST:event_btnListarVeiculosPorLojaActionPerformed
 
     private void menuLojaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuLojaActionPerformed
         // TODO add your handling code here:
@@ -254,20 +238,27 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     private void tbDinamicaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbDinamicaMouseClicked
         // TODO add your handling code here:
-        btnEditar.setEnabled(true);    
-        
         
         
     }//GEN-LAST:event_tbDinamicaMouseClicked
 
-    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+    private void btnQtdPorMarcaEModeloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQtdPorMarcaEModeloActionPerformed
         // TODO add your handling code here:
-
-        int index = tbDinamica.getSelectedRow();
-        int id = (int)tbDinamica.getValueAt(index, 0);
-        new TelaCadastroVeiculo(id).show();
         
-    }//GEN-LAST:event_btnEditarActionPerformed
+        _veiculoJTable.montarQtdVeiculosPorEModelo(tbDinamica);        
+        
+    }//GEN-LAST:event_btnQtdPorMarcaEModeloActionPerformed
+
+    private void btnMaiorMenorPorAnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMaiorMenorPorAnoActionPerformed
+        // TODO add your handling code here:
+        _veiculoJTable.montarMairoMenorPrecoPorAno(tbDinamica);        
+    }//GEN-LAST:event_btnMaiorMenorPorAnoActionPerformed
+
+    private void menuConsultaVeiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuConsultaVeiculoActionPerformed
+        // TODO add your handling code here:
+        new TelaConsultaVeiculo().show();
+        
+    }//GEN-LAST:event_menuConsultaVeiculoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -305,9 +296,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnListarVeiculos;
-    private javax.swing.JButton btnListarVeiculosPorLoja;
     private javax.swing.JButton btnMaiorMenorPorAno;
     private javax.swing.JButton btnQtdPorMarcaEModelo;
     private javax.swing.JLabel jLabel1;
@@ -316,9 +305,10 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel lblItemSelecionado;
     private javax.swing.JLabel lblSaudacao;
+    private javax.swing.JMenuItem menuConsultaVeiculo;
     private javax.swing.JMenuItem menuEstado;
     private javax.swing.JMenuItem menuLoja;
     private javax.swing.JMenuItem menuModelo;

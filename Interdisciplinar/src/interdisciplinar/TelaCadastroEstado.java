@@ -108,10 +108,10 @@ public class TelaCadastroEstado extends javax.swing.JFrame {
 
     private boolean formularioValido(){
         
-        if (!ValidacaoDeFormularios.campoTextoEstaValido("uf", txtUf, this))
+        if (!ValidacaoDeFormularios.campoTextoEstaValido("uf", txtUf, 2, this))
             return false;        
         
-        if (!ValidacaoDeFormularios.campoTextoEstaValido("estado", txtEstado, this))
+        if (!ValidacaoDeFormularios.campoTextoEstaValido("estado", txtEstado, 2, this))
             return false;                
         
         return true;        

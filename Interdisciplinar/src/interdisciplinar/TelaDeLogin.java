@@ -149,10 +149,10 @@ public class TelaDeLogin extends javax.swing.JFrame {
     }
     
     private boolean formularioValido() {
-        if (!ValidacaoDeFormularios.campoTextoEstaValido("Login", txtLogin, this))
+        if (!ValidacaoDeFormularios.campoTextoEstaValido("Login", txtLogin, 2, this))
             return false;
             
-        if (!ValidacaoDeFormularios.campoTextoEstaValido("Login", txtLogin, this))
+        if (!ValidacaoDeFormularios.campoTextoEstaValido("Login", txtLogin, 2, this))
             return false;
         
         return true;

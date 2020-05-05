@@ -99,7 +99,7 @@ public class TelaCadastroLoja extends javax.swing.JFrame {
     
     private boolean formularioValido(){
         
-        if (!ValidacaoDeFormularios.campoTextoEstaValido("uf", txtNomeLoja, this))
+        if (!ValidacaoDeFormularios.campoTextoEstaValido("uf", txtNomeLoja, 2, this))
             return false;        
         
         return true;        

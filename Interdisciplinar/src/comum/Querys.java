@@ -120,5 +120,63 @@ public class Querys {
                 veiculo.getId());
 
     }
+    
+    public static String listarVeiculosAgrupadoPorMarcaModelo(){
+        return 
+                "SELECT v.idMarcaModelo AS idModelo \n" +
+"		   ,count(v.idMarcaModelo) as Qtd\n" +
+"		   ,m.marca as Marca\n" +
+"		   ,m.modelo as Modelo\n" +
+"	  FROM Veiculo AS v \n" +
+"        INNER JOIN MarcasModelos AS m ON m.id = v.idMarcaModelo \n" +
+"  GROUP BY v.idMarcaModelo ";
+    }
+    
+    
+    public static String listarMaiorMenorPrecoPorAno(){
+        return "SELECT 	  v.ano AS Ano\n" +
+"			, max(preco) AS MaiorPreco\n" +
+"			, min(preco) AS MenorPreco\n" +
+"			, m.marca AS Marca\n" +
+"			, m.modelo AS Modelo\n" +
+"		  FROM Veiculo AS v\n" +
+"	    INNER JOIN MarcasModelos AS m ON m.id = v.idMarcaModelo \n" +
+"	  GROUP by v.ano ";
+    }
+    
+    
+    public static String filtroVeiculos(String placa, int idMarcaModelo, float precoInicial, float precoFinal){
+        
+        String queryBase =
+                "SELECT     v.id as id, \n" +
+                            " v.placa as placa, \n" +
+                            " v.idMarcaModelo AS idMarca, \n" +
+                            " m.marca as marca, \n" +
+                            " m.modelo as modelo, \n" +
+                            " v.ano as ano, \n" +
+                            " v.preco as preco, \n" +
+                            " v.idEstado as idEstado, \n" +
+                            " e.nome as nome, \n" +
+                            " e.uf as uf, \n" +
+                            " l.id as idLoja, \n" +
+                            " l.nome as loja \n" +
+"        	  FROM Veiculo AS v \n" +
+"           INNER JOIN MarcasModelos AS m ON m.id = v.idMarcaModelo \n" +
+"           INNER JOIN Estado AS e ON e.id = v.idEstado \n" +
+"           INNER JOIN Loja AS l ON l.id = v.idLoja \n";
+        
+        String query = queryBase + " WHERE placa like '%" + placa + "%' ";
+        if (idMarcaModelo > 0){
+            query += " AND idMarcaModelo = " + idMarcaModelo;
+        }
+        
+        if (precoFinal == 0 ){
+            precoFinal = 999000;
+        }        
+
+        query += String.format(" AND preco BETWEEN %s and %s ", precoInicial, precoFinal);
+
+        return query;
+    }
 
 }

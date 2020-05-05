@@ -37,4 +37,33 @@ public class Util {
         JOptionPane.showMessageDialog(frame, texto, "Alerta", JOptionPane.NO_OPTION);
     }
     
+    public static boolean eUmNumero(String valor){
+        int resultado = tryParseInt(valor, -1);
+        if (resultado == -1)
+            return false;
+       
+        return true;
+    }
+    
+    public static int tryParseInt(String valor, int valorDefault){
+        try {
+            
+            return Integer.parseInt(valor);
+            
+        } catch (Exception e) {
+            return valorDefault;
+        }
+    }
+    
+    
+    public static float tryParseFloat(String valor, float valorDefault){
+        try {
+            
+            return Float.parseFloat(valor);
+            
+        } catch (Exception e) {
+            return valorDefault;
+        }
+    }
+    
 }

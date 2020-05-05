@@ -5,8 +5,10 @@
  */
 package comum;
 
+import entidades.AgrupadoPorMarcaModelo;
 import entidades.Estado;
 import entidades.Loja;
+import entidades.MaiorMenorPrecoPorAno;
 import entidades.Modelo;
 import entidades.Veiculo;
 import java.sql.Connection;
@@ -195,16 +197,16 @@ public class Banco {
         return salvou;
 
     }
-
-    public ArrayList<Veiculo> listarVeiculos() {
-
+    
+    private ArrayList<Veiculo> listarVeiculos(String query){
+        
         ArrayList<Veiculo> veiculos = new ArrayList<Veiculo>();
 
         try {
 
             montarConexao();
             Statement statement = conexao.createStatement();
-            ResultSet resultado = statement.executeQuery(Querys.listarVeiculos());
+            ResultSet resultado = statement.executeQuery(query);
 
             while (resultado.next()) {
 
@@ -241,6 +243,18 @@ public class Banco {
         }
 
         return veiculos;
+        
+    }
+    
+    public ArrayList<Veiculo> listarVeiculos(String placa, int idMarcaModelo, float precoInicial, float precoFinal) {
+        
+        return listarVeiculos(Querys.filtroVeiculos(placa, idMarcaModelo, precoInicial, precoFinal));
+    
+    }
+
+    public ArrayList<Veiculo> listarVeiculos() {
+
+        return listarVeiculos(Querys.listarVeiculos());
 
     }
 
@@ -340,5 +354,85 @@ public class Banco {
         return salvou;
 
     }
+    
+    public ArrayList<AgrupadoPorMarcaModelo> listarVeiculosAgrupadoPorMarcaModelo() {
+         
+        ArrayList<AgrupadoPorMarcaModelo> veiculos = 
+                 new ArrayList<AgrupadoPorMarcaModelo>();
+
+        try {
+
+            montarConexao();
+            Statement statement = conexao.createStatement();
+            ResultSet resultado = statement.executeQuery(Querys.listarVeiculosAgrupadoPorMarcaModelo());
+
+            while (resultado.next()) {
+
+                int qtd = resultado.getInt("Qtd");
+                
+                int idMarca = resultado.getInt("idModelo");
+                String marca = resultado.getString("Marca");
+                String modelo = resultado.getString("Modelo");                
+
+                veiculos.add(
+                        new AgrupadoPorMarcaModelo(
+                                new Modelo(idMarca, marca, modelo),qtd));
+
+            }
+
+            statement.close();
+            return veiculos;
+
+        } catch (Exception e) {
+
+            System.out.println("Ocorreu um erro ao tentar executar um comando "
+                    + "no banco de dados");
+
+            System.out.println("Erro: " + e.getMessage());
+        }
+
+        return veiculos;
+    }
+    
+    public ArrayList<MaiorMenorPrecoPorAno> listarMaiorMenorPrecoPorAno() {
+        
+        ArrayList<MaiorMenorPrecoPorAno> veiculos = 
+                 new ArrayList<MaiorMenorPrecoPorAno>();
+
+        try {
+
+            montarConexao();
+            Statement statement = conexao.createStatement();
+            ResultSet resultado = statement.executeQuery(Querys.listarMaiorMenorPrecoPorAno());
+
+            while (resultado.next()) {
+
+                int ano = resultado.getInt("Ano");                
+                float maiorPreco = resultado.getFloat("MaiorPreco");
+                float menorPreco = resultado.getFloat("MenorPreco");
+                String marca = resultado.getString("Marca");                
+                String modelo = resultado.getString("Modelo");                
+
+                veiculos.add(new MaiorMenorPrecoPorAno(ano, menorPreco, maiorPreco, marca, modelo));
+            }
+
+            statement.close();
+            return veiculos;
+
+        } catch (Exception e) {
+
+            System.out.println("Ocorreu um erro ao tentar executar um comando "
+                    + "no banco de dados");
+
+            System.out.println("Erro: " + e.getMessage());
+        }
+
+        return veiculos;
+        
+    }
+    
+    
+    
+    
     
 }

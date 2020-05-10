@@ -8,12 +8,16 @@ package interdisciplinar;
 import comum.Banco;
 import comum.Util;
 import comum.ValidacaoDeFormularios;
+import entidades.Modelo;
 
 /**
  *
  * @author Lizandra
  */
 public class TelaCadastroModelos extends javax.swing.JFrame {
+
+    private Modelo _modelo;
+    private Banco _banco;
 
     /**
      * Creates new form TelaCadastroModelos
@@ -23,6 +27,22 @@ public class TelaCadastroModelos extends javax.swing.JFrame {
 
         this.setLocationRelativeTo(null);
         this.setResizable(false);
+        
+        _banco = new Banco();
+
+    }
+
+    public TelaCadastroModelos(int idMarcaModelo) {
+        this();        
+        carregarModelo(idMarcaModelo);
+    }
+
+    private void carregarModelo(int idMarcaModelo) {
+
+        _modelo = _banco.buscarModeloPorId(idMarcaModelo);
+
+        txtMarca.setText(_modelo.getMarca());
+        txtModelo.setText(_modelo.getModelo());
 
     }
 
@@ -109,29 +129,66 @@ public class TelaCadastroModelos extends javax.swing.JFrame {
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         // TODO add your handling code here:
-        if (!formularioValido())
+        if (!formularioValido()) {
             return;
+        }
         
-        boolean salvou = new Banco().novoModelo(txtMarca.getText(), txtModelo.getText());
-        if (salvou)
-            Util.mensagemDeAlerta("Modelo cadastrado com sucesso", this);
-        else
-            Util.mensagemDeAlerta("Ocorre um erro ao tentar salvar o modelo", this);        
+        // Se o modelo estiver null significa que o usuario
+        // esta criando um novo modelo
+        if (_modelo == null){
+            salvaNovoModelo();
+            return;
+        }
         
-        txtModelo.setText("");
+        // com a varival local _modelo tem conteudo, significa que o
+        // usuario quer alterar um modelo selecionado.
+        atualizarModelo();
+
+       
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     
-     private boolean formularioValido() {
-        if (!ValidacaoDeFormularios.campoTextoEstaValido("Marca", txtMarca, 2, this))
-            return false;
-            
-        if (!ValidacaoDeFormularios.campoTextoEstaValido("Modelo", txtModelo, 2, this))
-            return false;
+    private void atualizarModelo() {
         
-        return true;
-    }    
+        _modelo.setMarca(txtMarca.getText());
+        _modelo.setModelo(txtModelo.getText());
+        
+        boolean atualizou = new Banco().atualizarModelo(_modelo);
+        
+        if (atualizou) {
+            Util.mensagemDeAlerta("Modelo atualizado com sucesso", this);
+        } else {
+            Util.mensagemDeAlerta("Ocorreu um erro ao tentar atualizar um novo veiculo no banco de dados", this);
+        }
+        
+        this.dispose();
+        
+    }
     
+    private void salvaNovoModelo(){
+         
+        boolean salvou = new Banco().novoModelo(txtMarca.getText(), txtModelo.getText());
+        if (salvou) {
+            Util.mensagemDeAlerta("Modelo cadastrado com sucesso", this);
+        } else {
+            Util.mensagemDeAlerta("Ocorre um erro ao tentar salvar o modelo", this);
+        }
+
+        txtModelo.setText("");
+    }
+    
+    private boolean formularioValido() {
+        if (!ValidacaoDeFormularios.campoTextoEstaValido("Marca", txtMarca, 2, this)) {
+            return false;
+        }
+
+        if (!ValidacaoDeFormularios.campoTextoEstaValido("Modelo", txtModelo, 2, this)) {
+            return false;
+        }
+
+        return true;
+    }
+
     /**
      * @param args the command line arguments
      */

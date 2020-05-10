@@ -62,11 +62,16 @@ public class TelaPrincipal extends javax.swing.JFrame {
         menuLoja = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         menuConsultaVeiculo = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
+        menuModelos = new javax.swing.JMenuItem();
+        menuEstados = new javax.swing.JMenuItem();
+        menuLojas = new javax.swing.JMenuItem();
+        menuSobre = new javax.swing.JMenu();
+        menuProjeto = new javax.swing.JMenuItem();
 
         jMenu1.setText("jMenu1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         lblSaudacao.setText("Bem Vindo");
 
@@ -157,10 +162,43 @@ public class TelaPrincipal extends javax.swing.JFrame {
         });
         jMenu3.add(menuConsultaVeiculo);
 
-        jMenuItem3.setText("jMenuItem3");
-        jMenu3.add(jMenuItem3);
+        menuModelos.setText("Modelos");
+        menuModelos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuModelosActionPerformed(evt);
+            }
+        });
+        jMenu3.add(menuModelos);
+
+        menuEstados.setText("Estados");
+        menuEstados.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuEstadosActionPerformed(evt);
+            }
+        });
+        jMenu3.add(menuEstados);
+
+        menuLojas.setText("Lojas");
+        menuLojas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuLojasActionPerformed(evt);
+            }
+        });
+        jMenu3.add(menuLojas);
 
         jMenuBar1.add(jMenu3);
+
+        menuSobre.setText("Sobre");
+
+        menuProjeto.setText("Projeto");
+        menuProjeto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuProjetoActionPerformed(evt);
+            }
+        });
+        menuSobre.add(menuProjeto);
+
+        jMenuBar1.add(menuSobre);
 
         setJMenuBar(jMenuBar1);
 
@@ -260,6 +298,30 @@ public class TelaPrincipal extends javax.swing.JFrame {
         
     }//GEN-LAST:event_menuConsultaVeiculoActionPerformed
 
+    private void menuModelosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuModelosActionPerformed
+        // TODO add your handling code here:
+        new TelaConsultaModelos().show();
+    }//GEN-LAST:event_menuModelosActionPerformed
+
+    private void menuEstadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuEstadosActionPerformed
+        // TODO add your handling code here:
+        new TelaConsultaEstado().show();
+        
+        
+    }//GEN-LAST:event_menuEstadosActionPerformed
+
+    private void menuLojasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuLojasActionPerformed
+        // TODO add your handling code here:
+        new TelaConsultaLoja().show();
+    }//GEN-LAST:event_menuLojasActionPerformed
+
+    private void menuProjetoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuProjetoActionPerformed
+        // TODO add your handling code here:
+        
+        new TelaSobreProjeto().show();
+        
+    }//GEN-LAST:event_menuProjetoActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -305,13 +367,17 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblSaudacao;
     private javax.swing.JMenuItem menuConsultaVeiculo;
     private javax.swing.JMenuItem menuEstado;
+    private javax.swing.JMenuItem menuEstados;
     private javax.swing.JMenuItem menuLoja;
+    private javax.swing.JMenuItem menuLojas;
     private javax.swing.JMenuItem menuModelo;
+    private javax.swing.JMenuItem menuModelos;
+    private javax.swing.JMenuItem menuProjeto;
+    private javax.swing.JMenu menuSobre;
     private javax.swing.JTable tbDinamica;
     // End of variables declaration//GEN-END:variables
 }

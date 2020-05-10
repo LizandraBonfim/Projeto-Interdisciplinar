@@ -32,5 +32,16 @@ public class Estado {
     public String getUf() {
         return _uf;
     }
+
+    public void setNome(String nome) {
+        this._nome = nome;
+    }
+
+    public void setUf(String uf) {
+        this._uf = uf;
+    }
+    
+    
+    
     
 }

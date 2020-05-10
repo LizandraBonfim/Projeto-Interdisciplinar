@@ -8,6 +8,7 @@ package interdisciplinar;
 import comum.Banco;
 import comum.Util;
 import comum.ValidacaoDeFormularios;
+import entidades.Loja;
 
 /**
  *
@@ -15,14 +16,32 @@ import comum.ValidacaoDeFormularios;
  */
 public class TelaCadastroLoja extends javax.swing.JFrame {
 
+    private Loja _loja;
+    private Banco _banco;
+
+    public TelaCadastroLoja(int id) {
+
+        this();
+        carregarLojaId(id);
+    }
+
     /**
      * Creates new form TelaCadastroLoja
      */
     public TelaCadastroLoja() {
         initComponents();
-        
+
         this.setLocationRelativeTo(null);
         this.setResizable(false);
+
+        _banco = new Banco();
+    }
+
+    private void carregarLojaId(int id) {
+
+        _loja = _banco.buscarLojaPorId(id);
+        txtNomeLoja.setText(_loja.getNome());
+
     }
 
     /**
@@ -80,31 +99,62 @@ public class TelaCadastroLoja extends javax.swing.JFrame {
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         // TODO add your handling code here:
-        
-        if (!formularioValido())
+
+        if (!formularioValido()) {
             return;
-        
-        String nome = txtNomeLoja.getText();
-                
-        boolean salvou = new Banco().novaLoja(nome);
-        if (salvou)
-            Util.mensagemDeAlerta("Nova loja cadastrada com sucesso", this);
-        else
-            Util.mensagemDeAlerta("Ocorreu um erro ao tentar salvar", this);
-        
-        
-        txtNomeLoja.setText("");
+        }
+
+        // Se o loja estiver null significa que o usuario
+        // esta criando uma nova loja
+        if (_loja == null) {
+            salvarNovaLoja();
+            return;
+        }
+
+        // se a varival local _loja tem conteudo, significa que o
+        // usuario quer alterar a loja selecionado.
+        atualizarLoja();
+
     }//GEN-LAST:event_btnSalvarActionPerformed
 
-    
-    private boolean formularioValido(){
+    private void atualizarLoja() {
         
-        if (!ValidacaoDeFormularios.campoTextoEstaValido("uf", txtNomeLoja, 2, this))
-            return false;        
-        
-        return true;        
+        _loja.setNome(txtNomeLoja.getText());
+        boolean atualizou = _banco.atualizarLoja(_loja);
+
+        if (atualizou) {
+            Util.mensagemDeAlerta("Estado atualizado com sucesso", this);
+        } else {
+            Util.mensagemDeAlerta("Ocorreu um erro ao tentar atualizar a loja no banco de dados", this);
+        }
+
+        this.dispose();
+
     }
-    
+
+    private void salvarNovaLoja() {
+
+        String nome = txtNomeLoja.getText();
+
+        boolean salvou = new Banco().novaLoja(nome);
+        if (salvou) {
+            Util.mensagemDeAlerta("Nova loja cadastrada com sucesso", this);
+        } else {
+            Util.mensagemDeAlerta("Ocorreu um erro ao tentar salvar", this);
+        }
+
+        txtNomeLoja.setText("");
+
+    }
+
+    private boolean formularioValido() {
+
+        if (!ValidacaoDeFormularios.campoTextoEstaValido("uf", txtNomeLoja, 2, this)) {
+            return false;
+        }
+
+        return true;
+    }
     /**
      * @param args the command line arguments
      */

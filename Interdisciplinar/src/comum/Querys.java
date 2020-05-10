@@ -5,6 +5,9 @@
  */
 package comum;
 
+import entidades.Estado;
+import entidades.Loja;
+import entidades.Modelo;
 import entidades.Veiculo;
 
 /**
@@ -177,6 +180,71 @@ public class Querys {
         query += String.format(" AND preco BETWEEN %s and %s ", precoInicial, precoFinal);
 
         return query;
+    }
+    
+    public static String excluirVeiculo(int id){
+        return String.format("DELETE FROM Veiculo WHERE id = %s ", id);
+    }
+    
+    public static String excluirMarcaModelo(int id){
+        return String.format("DELETE FROM MarcasModelos WHERE id = %s ", id);
+    }
+    
+    public static String buscarModeloPorId(int id){
+        return String.format("SELECT * FROM MarcasModelos WHERE id = %s ", id);
+    }
+    
+    
+    public static String atualizarModelo(Modelo modelo){
+        return String.format("UPDATE MarcasModelos "
+                + "SET "
+                + "marca = '%s', "
+                + "modelo = '%s' WHERE id = %s", 
+                modelo.getMarca(), 
+                modelo.getModelo(), 
+                modelo.getId()
+        );
+    }
+    
+    
+    public static String atualizarEstado(Estado estado){
+        return String.format("UPDATE Estado "
+                + "SET "
+                + "nome = '%s', "
+                + "uf = '%s' "
+                + "WHERE id = %s ", 
+                estado.getNome(),
+                estado.getUf(),
+                estado.getId()
+                );
+                
+    }
+    
+    public static String buscarEstadoPorId(int id){
+        return String.format("SELECT * FROM Estado WHERE id = %s ", id);
+    }
+    
+    public static String excluiEstado(int id){
+        return String.format("DELETE FROM Estado WHERE id = %s", id);
+    }
+    
+    
+    public static String buscarLojaPorId(int id){
+        return String.format("SELECT * FROM Loja WHERE id = %s", id);
+    }
+    
+    public static String excluirLoja(int id){
+        return String.format("DELETE FROM Loja WHERE id = %s", id);
+    }
+    
+    public static String AtualizarLojas(Loja loja){
+        return String.format("UPDATE Loja "
+                + "SET "
+                + "nome = '%s' "
+                + "WHERE id = %s", 
+                loja.getNome(),
+                loja.getId()
+        );
     }
 
 }

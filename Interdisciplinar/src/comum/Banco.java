@@ -149,6 +149,10 @@ public class Banco {
         return estados;
 
     }
+    
+    public boolean excluirEstado(int idEstado){
+        return ExecutarComando(Querys.excluiEstado(idEstado));
+    }
 
     public ArrayList<Modelo> listarMarcasModelos() {
         ArrayList<Modelo> modelos = new ArrayList<Modelo>();
@@ -429,7 +433,152 @@ public class Banco {
 
         return veiculos;
         
+    }       
+    
+    public boolean excluirVeiculo(int id){
+        return ExecutarComando(Querys.excluirVeiculo(id));        
     }
+    
+    
+    public boolean excluirMarcaModelo(int id){
+        return ExecutarComando(Querys.excluirMarcaModelo(id));
+    }
+    
+     public Modelo buscarModeloPorId(int idVeiculo) {
+
+        Modelo modelo = null;
+
+        try {
+
+            montarConexao();
+            Statement statement = conexao.createStatement();
+            
+            String query = Querys.buscarModeloPorId(idVeiculo);
+            ResultSet resultado = statement.executeQuery(query);
+
+            if (resultado.next()) {
+
+                int id = resultado.getInt("id");                
+                String marca = resultado.getString("marca");
+                String nomeModelo = resultado.getString("modelo");
+                
+
+                modelo = new Modelo(id, marca, nomeModelo);
+                        
+            }
+
+            statement.close();
+            return modelo;
+
+        } catch (Exception e) {
+
+            System.out.println("Ocorreu um erro ao tentar executar um comando "
+                    + "no banco de dados");
+
+            System.out.println("Erro: " + e.getMessage());
+        }
+
+        return modelo;
+
+    }
+     
+     
+     public boolean atualizarModelo(Modelo modelo){
+         return ExecutarComando(Querys.atualizarModelo(modelo));
+     }
+     
+     
+     public boolean atualizarEstado(Estado estado){
+         return ExecutarComando(Querys.atualizarEstado(estado));
+     }
+     
+     
+     public Estado buscarEstadoPorId(int estadoId) {
+
+        Estado estado = null;
+
+        try {
+
+            montarConexao();
+            Statement statement = conexao.createStatement();
+            
+            String query = Querys.buscarEstadoPorId(estadoId);
+            ResultSet resultado = statement.executeQuery(query);
+
+            if (resultado.next()) {
+
+                int id = resultado.getInt("id");                
+                String nome = resultado.getString("nome");
+                String uf = resultado.getString("uf");
+                
+
+                estado = new Estado(id, nome, uf);
+                        
+            }
+
+            statement.close();
+            return estado;
+
+        } catch (Exception e) {
+
+            System.out.println("Ocorreu um erro ao tentar executar um comando "
+                    + "no banco de dados");
+
+            System.out.println("Erro: " + e.getMessage());
+        }
+
+        return estado;
+
+    }
+     
+     
+     public Loja buscarLojaPorId(int lojaId) {
+
+        Loja loja = null;
+
+        try {
+
+            montarConexao();
+            Statement statement = conexao.createStatement();
+            
+            String query = Querys.buscarLojaPorId(lojaId);
+            ResultSet resultado = statement.executeQuery(query);
+
+            if (resultado.next()) {
+
+                int id = resultado.getInt("id");                
+                String nome = resultado.getString("nome");
+                
+                loja = new Loja(id, nome);
+                        
+            }
+
+            statement.close();
+            return loja;
+
+        } catch (Exception e) {
+
+            System.out.println("Ocorreu um erro ao tentar executar um comando "
+                    + "no banco de dados");
+
+            System.out.println("Erro: " + e.getMessage());
+        }
+
+        return loja;
+
+    }
+     
+     public boolean excluirLoja(int id){
+         return ExecutarComando(Querys.excluirLoja(id));
+     }
+     
+     public boolean atualizarLoja(Loja loja){
+         return ExecutarComando(Querys.AtualizarLojas(loja));
+     }
+     
+     
+     
+    
     
     
     
